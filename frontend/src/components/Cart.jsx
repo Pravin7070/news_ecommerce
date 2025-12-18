@@ -3,7 +3,7 @@ import React from 'react'
 export default function Cart({ cart, setcart }) {
 
   const removeItem = (id) => {
-    setcart(cart.filter(item => item.id === id))
+    setcart(cart.filter(item => item.id !== id))
   }
 
   return (
@@ -38,10 +38,10 @@ export default function Cart({ cart, setcart }) {
             </div>
 
             <button
-              onClick={() => deleteProduct(item._id)}
+              onClick={() => removeItem(item.id)}
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
             >
-              Remove
+             Remove
             </button>
           </div>
         ))}

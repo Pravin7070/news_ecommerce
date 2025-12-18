@@ -1,33 +1,51 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams, Link } from 'react-router-dom'
 import { API } from "../utils/api"
-import { Link } from 'react-router-dom'
 
-export default function product() {
+export default function Product() {
   const { id } = useParams()
-  const [products, setproducts] = useState(null)
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setError(null)
+
     fetch(`${API}/api/Product`)
       .then(res => res.json())
       .then(data => {
-        const p = data.find(p => p._id === id)
-        setproducts(p)
+        if (cancelled) return
+        const p = data.find(item => item._id === id)
+        setProduct(p || null)
       })
-  })
+      .catch(() => {
+        if (!cancelled) setError('Failed to load product')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
 
-  const p = products
+    return () => { cancelled = true }
+  }, [id])
 
-  if (!products)
-    return (
-      <div className="text-center mt-20 text-xl text-gray-600">
-        Product not found
-      </div>
-    )
+  if (loading) return (
+    <div className="text-center mt-20 text-xl text-gray-600">Loading...</div>
+  )
+
+  if (error) return (
+    <div className="text-center mt-20 text-xl text-red-600">{error}</div>
+  )
+
+  if (!product) return (
+    <div className="text-center mt-20 text-xl text-gray-600">Product not found</div>
+  )
+
+  const p = product
 
   return (
-    <div className="flex justify-center px-6 py-12" key={p._id}>
+    <div className="flex justify-center px-6 py-12">
 
       {/* PRODUCT CARD */}
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-lg w-full">

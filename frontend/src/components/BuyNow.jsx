@@ -7,14 +7,15 @@ export default function () {
   const { id } = useParams()
   const [products, setproducts] = useState(null)
 
-  useEffect(() => {
-    fetch(`${API}/api/Product`)
-      .then(res => res.json())
-      .then(data => {
-        const k = data.find(p => p._id === id)
-        setproducts(k)
-      })
-  })
+useEffect(() => {
+  fetch(`${API}/api/Product`)
+    .then(res => res.json())
+    .then(data => {
+      const k = data.find(p => p._id === id)
+      setproducts(k)
+    })
+}, [id])
+
 
   const p = products
 

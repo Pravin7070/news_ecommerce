@@ -16,12 +16,26 @@ export default function Addproducts() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const product = {
-      name: form.name,
-      price: form.price,
-      img: form.image,
-      description: form.description
+
+    // Basic validation
+    if (!form.name || !form.price || !form.image || !form.description) {
+      alert("Please fill in all fields")
+      return
     }
+
+    const priceNum = Number(form.price)
+    if (Number.isNaN(priceNum)) {
+      alert("Please enter a valid number for price")
+      return
+    }
+
+const product = {
+  name: form.name,
+  price: priceNum,
+  img: form.image,
+  description: form.description
+}
+
 
     try {
       const res = await fetch(`${API}/api/postProduct`, {
@@ -32,20 +46,24 @@ export default function Addproducts() {
         body: JSON.stringify(product)
       })
 
+      const data = await res.json().catch(() => null)
+
       if (res.ok) {
-        alert("product added successfully")
+        alert("Product added successfully")
         setform({
           name: "",
           price: "",
           image: "",
           description: ""
         })
+        console.log('Created product:', data)
       } else {
-        alert("failed to add product")
+        console.error('Server error:', data)
+        alert("Failed to add product")
       }
     } catch (error) {
-      console.log(error)
-      alert("failed to add product")
+      console.error('Network error:', error)
+      alert("Failed to add product")
     }
   }
 

@@ -6,10 +6,12 @@ export default function Login() {
   const [email, sete] = useState("")
   const navigate = useNavigate()
 
-  const handleLogin = () => {
-    localStorage.setItem("email", email)
-    navigate("/")
-  }
+const handleLogin = (e) => {
+  e.preventDefault()
+  localStorage.setItem("email", email)
+  navigate("/")
+}
+
 
   return (
     <div className="flex justify-center items-center min-h-[70vh] px-4">
@@ -38,12 +40,13 @@ export default function Login() {
           </div>
 
           {/* SUBMIT */}
-          <button
-            onClick={handleLogin}
-            className="w-full py-2 bg-sky-500 text-white rounded-md font-semibold hover:bg-sky-600 transition"
-          >
-            Submit
-          </button>
+<button
+  onClick={handleLogin}
+  className="w-full py-2 bg-sky-500 text-white rounded-md font-semibold hover:bg-sky-600 transition"
+>
+  Submit
+</button>
+
 
         </form>
 

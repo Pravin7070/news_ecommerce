@@ -13,12 +13,13 @@ export default function Products({ setcart, cart }) {
   }, [])
 
   const addTocart = (product) => {
-    const item = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image
-    }
+const item = {
+  id: product._id,
+  name: product.name,
+  price: product.price,
+  image: product.image
+}
+
     setcart([...cart, item])
   }
 
@@ -26,9 +27,9 @@ export default function Products({ setcart, cart }) {
     const confirm = window.confirm("Are you sure you want to delete this product?")
     if (!confirm) return
 
-    const res = await fetch(`http://localhost:2796/api/deleteProduct/${id}`, {
-      method: "DELETE",
-    })
+const res = await fetch(`${API}/api/deleteProduct/${id}`, {
+  method: "DELETE",
+})
 
     if (res.status === 200) {
       alert("Product deleted successfully")
@@ -51,7 +52,7 @@ export default function Products({ setcart, cart }) {
 
         {products.map(p => (
           <div
-            key={p._id || p.id}
+            key={p._id}
             className="bg-white rounded-xl shadow-md hover:shadow-xl transition p-5 flex flex-col"
           >
 
